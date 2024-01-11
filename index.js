@@ -23,7 +23,7 @@ const httpServer = http.createServer(app)
 
 const io = new Server(httpServer, {
     cors: {
-      origin: "http://localhost:3000", // Replace with the origin of your React app
+      origin: "https://laugher-client.onrender.com", // Replace with the origin of your React app
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       credentials: true,
     },
