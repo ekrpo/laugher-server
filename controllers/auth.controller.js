@@ -116,12 +116,14 @@ export async function signIn(req, res, next) {
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       sameSite: "None",
+      secure: true,
       path: "/"
     })
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       sameSite: "None",
+      secure: true,
       path: "/",
     })
 
@@ -208,6 +210,7 @@ export async function refreshToken(req, res, next) {
       httpOnly: true,
       path: "/",
       sameSite: "None",
+      secure: true,
       maxAge: 1000 * 60 * 60
     })
 
@@ -215,6 +218,7 @@ export async function refreshToken(req, res, next) {
       httpOnly: true,
       path: "/",
       sameSite: "None",
+      secure: true,
       maxAge: 1000 * 60 * 60 * 24 * 7
     })
 
