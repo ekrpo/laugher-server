@@ -6,7 +6,7 @@ import pool from "../config/database.config.js"
 
 export function verifyAccessToken(req, res, next) {
     try {
-        const accessToken = req.headers["accessToken"]
+        const accessToken = req.header("accessToken")
 
         if ( !accessToken ) {
             throw new AuthenticationError("Access token not exist")
@@ -27,7 +27,7 @@ export async function verifyRefreshToken(req, res, next) {
     try {
         const dbClient = await pool.connect()
 
-        const refreshToken = req.headers["refreshToken"]
+        const refreshToken = req.header("refreshToken")
         console.log(refreshToken)
         if ( !refreshToken ) {
             throw new AuthenticationError("Refresh token not exist")
