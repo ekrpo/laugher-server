@@ -189,7 +189,7 @@ export async function refreshToken(req, res, next) {
   try {
     const dbClient = await pool.connect()
 
-    const refreshToken = req.cookies.refreshToken
+    const refreshToken = req.header("refreshToken")
 
     const deleteOldToken = `
     DELETE FROM refresh_tokens
