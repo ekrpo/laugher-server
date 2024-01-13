@@ -43,40 +43,42 @@ async function addJokeToDatabase(req, fileData) {
           id: insertionResult[0].id,
           photo_url: insertionResult[0].photo_url,
         });
-      }
-      const storage = getStorage()
+      } else {
+        const storage = getStorage()
 
-      const storageRef = ref(storage, `files/${req.file.originalname}${Date.now()}`)
-
-      const metadata = {
-        contentType: req.file.mimetype
-      }
-
-      const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
-
-      const downloadURL = await getDownloadURL(snapshot.ref)
+        const storageRef = ref(storage, `files/${req.file.originalname}${Date.now()}`)
   
-
-
-      let fileData = {
-        path: downloadURL
-      }
-      if(downloadURL.includes("blob")){
-        fileData.type = "audio"
-      }else{
-        fileData.type = "photo"
-      }
+        const metadata = {
+          contentType: req.file.mimetype
+        }
   
-      const insertionResult = await addJokeToDatabase(req, fileData);
-
+        const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
   
-      return res.json({
-        redirectUrl: "/",
-        message: "You uploaded a joke successfully",
-        id: insertionResult[0].id,
-        photo_url: insertionResult[0].photo_url,
-        audio: insertionResult[0].audio
-      });
+        const downloadURL = await getDownloadURL(snapshot.ref)
+    
+  
+  
+        let fileData = {
+          path: downloadURL
+        }
+        if(downloadURL.includes("blob")){
+          fileData.type = "audio"
+        }else{
+          fileData.type = "photo"
+        }
+    
+        const insertionResult = await addJokeToDatabase(req, fileData);
+  
+    
+        return res.json({
+          redirectUrl: "/",
+          message: "You uploaded a joke successfully",
+          id: insertionResult[0].id,
+          photo_url: insertionResult[0].photo_url,
+          audio: insertionResult[0].audio
+        });
+      }
+      
     } catch (error) {
       req.error = error;
       next();
