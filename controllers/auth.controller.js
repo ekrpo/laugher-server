@@ -128,8 +128,8 @@ export async function signIn(req, res, next) {
     })
     */
 
-    res.setHeader("accessToken", newAccessToken)
-    res.setHeader("refreshToken", newRefreshToken)
+    res.setHeader("accessToken", accessToken)
+    res.setHeader("refreshToken", refreshToken)
 
     const userId = req.userId
     const insertRefreshToken = `
