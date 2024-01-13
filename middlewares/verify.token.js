@@ -50,6 +50,7 @@ export async function verifyRefreshToken(req, res, next) {
             throw new AuthenticationError("Refresh token is not valid")
         }
         await dbClient.release()
+        req.refreshToken = refreshToken
         next()
     } catch (error) {
         req.error = error

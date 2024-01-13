@@ -35,6 +35,16 @@ async function addJokeToDatabase(req, fileData) {
   export async function addJoke(req, res, next) {
     try {
       const { file } = req;
+      if (!file) {
+        const insertionResult = await addJokeToDatabase(req, null, null);
+  
+        return res.json({
+          redirectUrl: "/",
+          message: "You uploaded a joke successfully",
+          id: insertionResult[0].id,
+          photo_url: insertionResult[0].photo_url,
+        });
+      }
       const storage = getStorage()
 
       const storageRef = ref(storage, `files/${req.file.originalname}${Date.now()}`)
@@ -47,16 +57,7 @@ async function addJokeToDatabase(req, fileData) {
 
       const downloadURL = await getDownloadURL(snapshot.ref)
   
-      if (!file) {
-        const insertionResult = await addJokeToDatabase(req, null, null);
-  
-        return res.json({
-          redirectUrl: "/",
-          message: "You uploaded a joke successfully",
-          id: insertionResult[0].id,
-          photo_url: insertionResult[0].photo_url,
-        });
-      }
+
 
       let fileData = {
         path: downloadURL
