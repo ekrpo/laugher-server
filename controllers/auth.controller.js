@@ -128,9 +128,6 @@ export async function signIn(req, res, next) {
     })
     */
 
-    res.setHeader("accessToken", accessToken)
-    res.setHeader("refreshToken", refreshToken)
-
     const userId = req.userId
     const insertRefreshToken = `
     INSERT INTO refresh_tokens(token, user_id)
@@ -148,7 +145,9 @@ export async function signIn(req, res, next) {
       profilePhoto: req.profilePhoto,
       firstName: req.firstName,
       lastName: req.lastName,
-      id: req.id
+      id: req.id,
+      accessToken: accessToken,
+      refreshToken: refreshToken
     })
   } catch (error) {
     req.error = error
@@ -230,11 +229,11 @@ export async function refreshToken(req, res, next) {
     
     await dbClient.release() 
 
-    res.setHeader("accessToken", newAccessToken)
-    res.setHeader("refreshToken", newRefreshToken)
 
     return res.json({
-      message: "Token refreshed"
+      message: "Token refreshed",
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken
     })
   } catch (error) {
     req.error = error
