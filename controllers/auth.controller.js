@@ -117,14 +117,14 @@ export async function signIn(req, res, next) {
       httpOnly: true,
       sameSite: "None",
       secure: true,
-      domain: ".onrender.com"
+      domain: "laugher-client.onrender.com"
     })
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       sameSite: "None",
       secure: true,
-      domain: ".onrender.com"
+      domain: "laugher-client.onrender.com"
     })
 
     const userId = req.userId
@@ -208,7 +208,7 @@ export async function refreshToken(req, res, next) {
 
     res.cookie("accessToken", newAccessToken, {
       httpOnly: true,
-      domain: ".onrender.com",
+      domain: "laugher-client.onrender.com",
       sameSite: "None",
       secure: true,
       maxAge: 1000 * 60 * 60
@@ -216,7 +216,7 @@ export async function refreshToken(req, res, next) {
 
     res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true,
-      domain: ".onrender.com",
+      domain: "laugher-client.onrender.com",
       sameSite: "None",
       secure: true,
       maxAge: 1000 * 60 * 60 * 24 * 7
