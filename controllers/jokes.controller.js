@@ -34,8 +34,7 @@ async function addJokeToDatabase(req, fileData) {
   
   export async function addJoke(req, res, next) {
     try {
-      const { file } = req;
-      if (!file) {
+      if (!req.file || req.file === null) {
         const insertionResult = await addJokeToDatabase(req, null, null);
   
         return res.json({
