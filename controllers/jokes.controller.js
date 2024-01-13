@@ -15,8 +15,14 @@ async function addJokeToDatabase(req, fileData) {
       RETURNING id, photo_url, audio;
     `;
 
-    const photoUrl = fileData.type === "photo" ? fileData.path : null
-    const audioUrl = fileData.type === "audio" ? fileData.path : null
+    let photoUrl;
+    let audioUrl;
+    if(fileData !== null){
+      photoUrl = fileData.type === "photo" ? fileData.path : null
+      audioUrl = fileData.type === "audio" ? fileData.path : null
+    }
+
+
   
     const jokeValues = [
       description,
@@ -35,7 +41,7 @@ async function addJokeToDatabase(req, fileData) {
   export async function addJoke(req, res, next) {
     try {
       if (!req.file || req.file === null) {
-        const insertionResult = await addJokeToDatabase(req, null, null);
+        const insertionResult = await addJokeToDatabase(req, null);
   
         return res.json({
           redirectUrl: "/",
