@@ -208,7 +208,7 @@ export async function refreshToken(req, res, next) {
 
     res.cookie("accessToken", newAccessToken, {
       httpOnly: true,
-      domain: ".onrender.com"
+      domain: ".onrender.com",
       sameSite: "None",
       secure: true,
       maxAge: 1000 * 60 * 60
@@ -216,7 +216,7 @@ export async function refreshToken(req, res, next) {
 
     res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true,
-      domain: ".onrender.com"
+      domain: ".onrender.com",
       sameSite: "None",
       secure: true,
       maxAge: 1000 * 60 * 60 * 24 * 7
