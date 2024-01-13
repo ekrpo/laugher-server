@@ -112,7 +112,7 @@ export async function signIn(req, res, next) {
 
     const accessToken = generateAccessToken(req.userId)
     const refreshToken = generateRefreshToken(req.userId)
-
+    /*
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       sameSite: "None",
@@ -126,6 +126,10 @@ export async function signIn(req, res, next) {
       secure: true,
       domain: "laugher-client.onrender.com"
     })
+    */
+
+    res.setHeader("accessToken", newAccessToken)
+    res.setHeader("refreshToken", newRefreshToken)
 
     const userId = req.userId
     const insertRefreshToken = `
@@ -206,6 +210,7 @@ export async function refreshToken(req, res, next) {
     const insertionValues = [newRefreshToken, req.userId]
     await dbClient.query(insertNewToken, insertionValues)
 
+    /*
     res.cookie("accessToken", newAccessToken, {
       httpOnly: true,
       domain: "laugher-client.onrender.com",
@@ -221,8 +226,12 @@ export async function refreshToken(req, res, next) {
       secure: true,
       maxAge: 1000 * 60 * 60 * 24 * 7
     })
-
+    */
+    
     await dbClient.release() 
+
+    res.setHeader("accessToken", newAccessToken)
+    res.setHeader("refreshToken", newRefreshToken)
 
     return res.json({
       message: "Token refreshed"
