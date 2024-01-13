@@ -9,7 +9,7 @@ export function generateAccessToken(id) {
     const secretKey = process.env.ACCESS_TOKEN_SECRET
     return jwt.sign(payload, secretKey, {
         algorithm: "HS256",
-        expiresIn: "120s"
+        expiresIn: "24h"
     })
 }
 

@@ -38,7 +38,7 @@ export async function signUp(req, res, next) {
     INSERT INTO unverified_users (code, username, first_name, last_name, email, birthday, password_hash)
     VALUES ($1, $2, $3, $4, $5, $6, $7);
     `
-    const queryValues = Object.values(userData) // Get array of object's values
+    const queryValues = [userData.username, userData.firstName, userData.lastName, userData.email, userData.birthday, userData.password] // Get array of object's values
     const verificationCode = generateCode()  // Call function for generate verification code
     queryValues.unshift(verificationCode) // Add verification code on first place in array of query values
     
