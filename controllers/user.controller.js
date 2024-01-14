@@ -24,56 +24,22 @@ export async function searchForUser(req, res, next) {
     try {
       const userId = req.userId;
   
-      const randomFriendQuery = `
-        SELECT sender_id, receiver_id
-        FROM users_relations 
-        WHERE sender_id = $1 OR receiver_id = $1
-        LIMIT 1;
-      `;
-      const relationshipResult = await executeQuery(randomFriendQuery, [userId]);
-  
-      if (relationshipResult.length === 0) {
-        const suggestionsQuery = `
-          SELECT DISTINCT *
-          FROM users
-          WHERE users.id NOT IN (
-            SELECT receiver_id
-            FROM users_relations
-            WHERE sender_id = $1 OR receiver_id = $1
-          )
-          AND users.id != $1
-          LIMIT 3;
-        `;
-        const suggestions = await executeQuery(suggestionsQuery, [userId]);
-  
-        return res.json(suggestions);
-      }
-  
-      const { sender_id, receiver_id } = relationshipResult[0];
-      const friend_id = sender_id == userId ? receiver_id : sender_id;
-  
-      const randomSuggestionQuery = `
+
+      const suggestionsQuery = `
         SELECT DISTINCT *
         FROM users
-        WHERE users.id IN (
+        WHERE users.id NOT IN (
           SELECT receiver_id
           FROM users_relations
-          WHERE sender_id = $1
+          WHERE sender_id = $1 OR receiver_id = $1
         )
-        AND users.id NOT IN (
-          SELECT receiver_id
-          FROM users_relations
-          WHERE users.id = $2 OR sender_id = $2
-        )
-        AND users.id = $2
+        AND users.id != $1
         LIMIT 3;
       `;
-      const suggestions = await executeQuery(randomSuggestionQuery, [
-        friend_id,
-        userId,
-      ]);
-  
+      const suggestions = await executeQuery(suggestionsQuery, [userId]);
+
       return res.json(suggestions);
+
     } catch (error) {
       req.error = error;
       next();
