@@ -267,7 +267,7 @@ async function addJokeToDatabase(req, fileData) {
         SELECT reactions.author_id AS reaction_author_id, jokes.author_id, reactions.value AS reaction_value, jokes.id, description, reactions_sum, photo_url, audio, publish_time, reaction_counter, comment_counter, username, profile_picture_url
         FROM jokes
         INNER JOIN users ON jokes.author_id = users.id
-        LEFT JOIN reactions ON jokes.id = reactions.joke_id
+        LEFT JOIN reactions ON jokes.id = reactions.joke_id AND reactions.author_id = $1
         WHERE jokes.author_id = $1
         ORDER BY publish_time DESC, reaction_counter DESC, comment_counter DESC
         LIMIT 10
